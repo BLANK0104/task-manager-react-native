@@ -33,6 +33,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Initialize React Native project if needed
+        run: |
+          if [ ! -d "android" ]; then
+            echo "Android directory not found. Initializing React Native project..."
+            npx react-native init TaskManagerApp --skip-install
+            # Copy our custom App.js
+            cp App.js TaskManagerApp/App.js
+            cp app.json TaskManagerApp/app.json
+            # Move android folder to root
+            mv TaskManagerApp/android .
+            # Clean up
+            rm -rf TaskManagerApp
+          fi
+
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:

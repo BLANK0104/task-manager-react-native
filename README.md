@@ -58,7 +58,25 @@ Before running this app, make sure you have the following installed:
    yarn install
    ```
 
-3. **Install iOS dependencies (macOS only)**
+3. **Initialize React Native project (First time only)**
+   
+   If the `android` and `ios` folders don't exist, initialize them:
+   ```bash
+   npx react-native init TaskManagerTemp --skip-install
+   mv TaskManagerTemp/android .
+   mv TaskManagerTemp/ios .
+   rm -rf TaskManagerTemp
+   ```
+   
+   Or on Windows:
+   ```bash
+   npx react-native init TaskManagerTemp --skip-install
+   move TaskManagerTemp\android .
+   move TaskManagerTemp\ios .
+   rmdir /s /q TaskManagerTemp
+   ```
+
+4. **Install iOS dependencies (macOS only)**
    ```bash
    cd ios
    pod install
@@ -241,6 +259,32 @@ You can customize the app by modifying:
 ## CI/CD Pipeline
 
 This project includes a GitHub Actions workflow that automatically builds and releases the APK when you push to the repository.
+
+### Initial Setup
+
+**Important:** Before pushing to GitHub, initialize the native project structure locally:
+
+```bash
+# Initialize React Native native folders
+npx react-native init TaskManagerTemp --skip-install
+
+# Move the folders (Linux/macOS)
+mv TaskManagerTemp/android .
+mv TaskManagerTemp/ios .
+rm -rf TaskManagerTemp
+
+# Or on Windows
+move TaskManagerTemp\android .
+move TaskManagerTemp\ios .
+rmdir /s /q TaskManagerTemp
+
+# Commit and push
+git add .
+git commit -m "Add native project structure"
+git push origin main
+```
+
+The workflow will automatically handle initialization if the folders are missing, but it's recommended to do it locally first.
 
 ### How It Works
 
