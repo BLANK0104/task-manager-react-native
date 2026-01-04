@@ -45,6 +45,26 @@ Before running this app, make sure you have the following installed:
 
 ## Installation
 
+### Quick Setup (Automated)
+
+**Windows:**
+```bash
+setup-project.bat
+```
+
+**Linux/macOS:**
+```bash
+chmod +x setup-project.sh
+./setup-project.sh
+```
+
+This script will:
+- Install all npm dependencies
+- Initialize React Native native folders (android/ios)
+- Set up the project structure automatically
+
+### Manual Setup
+
 1. **Clone the repository**
    ```bash
    git clone <your-repository-url>
@@ -54,26 +74,27 @@ Before running this app, make sure you have the following installed:
 2. **Install dependencies**
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
 3. **Initialize React Native project (First time only)**
    
-   If the `android` and `ios` folders don't exist, initialize them:
+   Create the native folders:
    ```bash
-   npx react-native init TaskManagerTemp --skip-install
-   mv TaskManagerTemp/android .
-   mv TaskManagerTemp/ios .
-   rm -rf TaskManagerTemp
+   npx @react-native-community/cli init TaskManagerTemp --skip-install
    ```
    
-   Or on Windows:
+   **On Windows:**
    ```bash
-   npx react-native init TaskManagerTemp --skip-install
    move TaskManagerTemp\android .
    move TaskManagerTemp\ios .
    rmdir /s /q TaskManagerTemp
+   ```
+   
+   **On Linux/macOS:**
+   ```bash
+   mv TaskManagerTemp/android .
+   mv TaskManagerTemp/ios .
+   rm -rf TaskManagerTemp
    ```
 
 4. **Install iOS dependencies (macOS only)**
@@ -260,31 +281,28 @@ You can customize the app by modifying:
 
 This project includes a GitHub Actions workflow that automatically builds and releases the APK when you push to the repository.
 
-### Initial Setup
+### ⚠️ Important: First-Time Setup
 
-**Important:** Before pushing to GitHub, initialize the native project structure locally:
+**Before the CI/CD pipeline can work, you MUST commit the native project structure:**
 
-```bash
-# Initialize React Native native folders
-npx react-native init TaskManagerTemp --skip-install
+1. **Run the setup script locally:**
+   ```bash
+   # Windows
+   setup-project.bat
+   
+   # Linux/macOS
+   chmod +x setup-project.sh
+   ./setup-project.sh
+   ```
 
-# Move the folders (Linux/macOS)
-mv TaskManagerTemp/android .
-mv TaskManagerTemp/ios .
-rm -rf TaskManagerTemp
+2. **Commit the android folder:**
+   ```bash
+   git add .
+   git commit -m "Add native Android project structure"
+   git push origin main
+   ```
 
-# Or on Windows
-move TaskManagerTemp\android .
-move TaskManagerTemp\ios .
-rmdir /s /q TaskManagerTemp
-
-# Commit and push
-git add .
-git commit -m "Add native project structure"
-git push origin main
-```
-
-The workflow will automatically handle initialization if the folders are missing, but it's recommended to do it locally first.
+The `android` and `ios` folders must be in your repository for the GitHub Actions workflow to build the APK.
 
 ### How It Works
 
