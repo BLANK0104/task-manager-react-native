@@ -68,6 +68,16 @@ jobs:
         run: |
           cd android
           ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: List generated APK files
+        run: |
+          echo "📦 Listing generated APK files..."
+          echo "Debug APKs:"
+          find android/app/build/outputs/apk/debug -type f -name "*.apk" || echo "No debug APKs found"
+          echo ""
+          echo "Release APKs:"
+          find android/app/build/outputs/apk/release -type f -name "*.apk" || echo "No release APKs found"
+
       - name: Get app version
         id: app_version
         run: |
@@ -95,8 +105,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release-apk
-          path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+          path: android/app/build/outputs/apk/release/*.apk
           retention-days: 90
+          if-no-files-found: warn
       - name: Create Release
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: softprops/action-gh-release@v1
@@ -133,8 +144,8 @@ jobs:
           prerelease: false
           files: |
             android/app/build/outputs/apk/debug/app-debug.apk
-            android/app/build/outputs/apk/release/app-release-unsigned.apk
-          fail_on_unmatched_files: true
+            android/app/build/outputs/apk/release/*.apk
+          fail_on_unmatched_files: false
   # Optional: Add iOS build job if needed
   # build-ios:
   #   runs-on: macos-latest
