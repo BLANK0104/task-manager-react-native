@@ -17,6 +17,21 @@ android {
         targetSdkVersion 34
         versionCode 1
         versionName "1.0"
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "false"
+        buildConfigField "boolean", "IS_HERMES_ENABLED", enableHermes.toString()
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
     signingConfigs {
         debug {
@@ -48,6 +63,9 @@ dependencies {
     // React Native from node_modules - must specify version
     implementation("com.facebook.react:react-android:0.73.2")
     
+    // SoLoader for React Native
+    implementation("com.facebook.soloader:soloader:0.10.5+")
+
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     
     debugImplementation("com.facebook.flipper:flipper:0.182.0")
