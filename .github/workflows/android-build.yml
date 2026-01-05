@@ -33,6 +33,24 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Check for Android folder
+        run: |
+          if [ ! -d "android" ]; then
+            echo "❌ ERROR: Android folder not found!"
+            echo ""
+            echo "The native Android project structure is missing from your repository."
+            echo ""
+            echo "To fix this, run these commands locally:"
+            echo "  1. setup-project.bat (on Windows) or ./setup-project.sh (on Linux/macOS)"
+            echo "  2. git add ."
+            echo "  3. git commit -m 'Add native Android project structure'"
+            echo "  4. git push origin main"
+            echo ""
+            echo "The android folder must be committed to your repository for CI/CD to work."
+            exit 1
+          fi
+          echo "✅ Android folder found"
+
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:

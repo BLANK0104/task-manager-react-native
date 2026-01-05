@@ -1,0 +1,10 @@
+rootProject.name = 'TaskManagerApp'
+
+def nativeModulesScript = file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
+if (nativeModulesScript.exists()) {
+    apply from: nativeModulesScript
+    applyNativeModulesSettingsGradle(settings)
+}
+
+include ':app'
+
