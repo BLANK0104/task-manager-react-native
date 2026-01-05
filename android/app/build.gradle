@@ -5,6 +5,16 @@ def enableProguardInReleaseBuilds = false
 def jscFlavor = 'org.webkit:android-jsc:+'
 def enableHermes = true
 
+// Enable JS bundling for release builds
+project.ext.react = [
+    enableHermes: enableHermes,
+    bundleInDebug: false,
+    bundleInRelease: true,
+    devDisabledInRelease: true,
+]
+
+apply from: "../../node_modules/react-native/react.gradle"
+
 android {
     ndkVersion "26.1.10909125"
     buildToolsVersion "34.0.0"
@@ -46,9 +56,11 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
+            // Sign with debug key for now (change this for production)
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            shrinkResources false
         }
     }
     packagingOptions {
